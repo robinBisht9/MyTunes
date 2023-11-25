@@ -1,13 +1,17 @@
 import { useSelector } from "react-redux";
-import Introduction from "./Introduction";
+
+import SpotifyPlaylistCollections from "./SpotifyPlaylistCollections";
 
 const MainBody = () => {
   const spotifyAccessToken = useSelector((state) => state.spotify.token);
 
   return (
     <>
-      {spotifyAccessToken && <Introduction />}
-      {!spotifyAccessToken && <div>Awaiting authorization</div>}
+      {spotifyAccessToken ? (
+        <SpotifyPlaylistCollections />
+      ) : (
+        <div>Awaiting authorization</div>
+      )}
     </>
   );
 };

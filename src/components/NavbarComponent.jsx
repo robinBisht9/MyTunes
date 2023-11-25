@@ -2,10 +2,7 @@ import SpotifyAuth from "./SpotifyAuth";
 
 const NavbarComponent = () => {
   return (
-    <nav
-      className="navbar navbar-expand-lg navbar-light mb-3 border-bottom "
-      data-bs-theme="dark"
-    >
+    <nav className="navbar navbar-expand-lg navbar-light mb-3 border-bottom">
       <ul className="w-100 navbar-nav d-flex justify-content-around">
         <li className="nav-item">
           <SpotifyAuth />

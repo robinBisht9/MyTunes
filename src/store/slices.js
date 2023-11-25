@@ -16,6 +16,9 @@ const createAuthSlice = (serviceName) => {
       setUser: (state, action) => {
         state.user = action.payload;
       },
+      logout: (state) => {
+        state.token = null;
+      },
     },
   });
 
