@@ -1,3 +1,5 @@
+import SpotifyAuth from "./SpotifyAuth";
+
 const NavbarComponent = () => {
   return (
     <nav
@@ -6,9 +8,7 @@ const NavbarComponent = () => {
     >
       <ul className="w-100 navbar-nav d-flex justify-content-around">
         <li className="nav-item">
-          <a className="btn btn-outline-success me-3" href="/login/spotify">
-            <i className="bi bi-spotify"></i> Login via Spotify
-          </a>
+          <SpotifyAuth />
         </li>
         <li className="nav-item">
           <a className="btn btn-outline-danger me-3" href="/login/youtube">

@@ -1,10 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import spotifyReducer from "./slices/spotifySlice";
-import youtubeReducer from "./slices/youtubeSlice";
+import { spotifyAuthSlice, youtubeAuthSlice } from "./slices";
 
 export const store = configureStore({
   reducer: {
-    spotify: spotifyReducer,
-    youtube: youtubeReducer,
+    spotify: spotifyAuthSlice.reducer,
+    youtube: youtubeAuthSlice.reducer,
   },
 });

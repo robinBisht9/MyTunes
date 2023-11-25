@@ -5,7 +5,7 @@ const Header = () => {
         className="blog-header-logo text-body-emphasis text-decoration-none"
         href="#"
       >
-        EmotiTunes
+        MyTunes
       </a>
     </div>
   );

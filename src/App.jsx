@@ -1,19 +1,17 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import NavbarComponent from "./components/NavbarComponent";
-import Header from "./components/Header";
-import MainBody from "./components/MainBody";
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomePage from "./page/HomePage";
+import SpotifyAuthCallBack from "./page/SpotifyAuthCallBack";
 function App() {
-  const youtubeLogin = false;
-  const spotifyLogin = false;
-
   return (
-    <div className="container">
-      <Header />
-      <NavbarComponent />
-      {youtubeLogin && spotifyLogin && <MainBody />}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/spotifyCallback" element={<SpotifyAuthCallBack />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
