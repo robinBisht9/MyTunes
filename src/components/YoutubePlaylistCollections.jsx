@@ -1,32 +1,10 @@
 import { useFetch } from "../hooks/useFetch";
 import { fetchDataFromSpotifyApi } from "../utils/fetchSpotifyApi";
-import {
-  AUTH_TOKEN_URL,
-  CLIENT_ID,
-  CLIENT_SECRET_ID,
-} from "../utils/spotifyAuthorization";
-import {
-  SPOTIFY_ACCESS_TOKEN,
-  SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME,
-  SPOTIFY_REFRESH_TOKEN,
-} from "../constants";
-import { spotifyAuthSlice } from "../store/slices";
 
-const spotifyAuthConstants = {
-  ACCESS_TOKEN: SPOTIFY_ACCESS_TOKEN,
-  REFRESH_TOKEN: SPOTIFY_REFRESH_TOKEN,
-  TOKEN_EXPIRE_TIME: SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME,
-  CLIENT_ID,
-  CLIENT_SECRET_ID,
-  TOKEN_URL: AUTH_TOKEN_URL,
-};
-
-const SpotifyPlaylistCollections = () => {
+const YoutubePlaylistCollections = () => {
   const { data, loading, error } = useFetch(
     "/me/playlists",
-    fetchDataFromSpotifyApi,
-    spotifyAuthSlice,
-    spotifyAuthConstants
+    fetchDataFromSpotifyApi
   );
 
   console.log(data);
@@ -66,4 +44,4 @@ const SpotifyPlaylistCollections = () => {
   );
 };
 
-export default SpotifyPlaylistCollections;
+export default YoutubePlaylistCollections;

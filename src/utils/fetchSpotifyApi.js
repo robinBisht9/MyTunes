@@ -16,7 +16,6 @@ export const fetchDataFromSpotifyApi = async (url) => {
 
     return data;
   } catch (error) {
-    console.log(error);
-    return error;
+    throw new Error(error.response);
   }
 };

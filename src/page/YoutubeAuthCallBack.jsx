@@ -16,7 +16,7 @@ import {
   REDIRECT_URI,
 } from "../utils/spotifyAuthorization";
 
-const SpotifyAuthCallBack = () => {
+const YoutubeAuthCallBack = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -52,7 +52,6 @@ const SpotifyAuthCallBack = () => {
         localStorage.setItem(SPOTIFY_REFRESH_TOKEN, refreshToken);
         localStorage.setItem(SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME, expirationTime);
       } catch (error) {
-        console.log("Error from Spotify Auth Callback");
         console.log(error.response.data);
         navigate("/");
       }
@@ -62,7 +61,7 @@ const SpotifyAuthCallBack = () => {
     navigate("/");
   }, [dispatch, navigate]);
 
-  return <div>Spotify Auth CallBack</div>;
+  return <div>Youtube Auth CallBack</div>;
 };
 
-export default SpotifyAuthCallBack;
+export default YoutubeAuthCallBack;

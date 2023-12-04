@@ -1,44 +1,37 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { spotifyAuthSlice } from "../store/slices";
-import {
-  AUTH_TOKEN_URL,
-  CLIENT_ID,
-  CLIENT_SECRET_ID,
-} from "../utils/spotifyAuthorization";
-import {
-  SPOTIFY_ACCESS_TOKEN,
-  SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME,
-  SPOTIFY_REFRESH_TOKEN,
-} from "../constants";
 import axios from "axios";
 
-export const useFetch = (url, fetchFunction) => {
+export const useFetch = (url, fetchFunction, authSlice, authConstants) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
-  const refreshTokenOriginal = localStorage.getItem(SPOTIFY_REFRESH_TOKEN);
-  const tokenTime = parseInt(
-    localStorage.getItem(SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME),
+
+  const refreshToken = localStorage.getItem(authConstants.REFRESH_TOKEN);
+  const tokenExpireTime = parseInt(
+    localStorage.getItem(authConstants.TOKEN_EXPIRE_TIME),
     10
   );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     const abortController = new AbortController();
-    const isSpotifyTokenExpired = () => {
-      const currTime = new Date().getTime();
-      return tokenTime && currTime >= tokenTime;
+
+    const isTokenExpired = () => {
+      const currentTime = new Date().getTime();
+      return tokenExpireTime && currentTime >= tokenExpireTime;
     };
-    const refreshSpotifyAccessToken = async () => {
+
+    const refreshTokenFunction = async () => {
       try {
         const response = await axios.post(
-          AUTH_TOKEN_URL,
+          authConstants.TOKEN_URL,
           new URLSearchParams({
             grant_type: "refresh_token",
-            refresh_token: refreshTokenOriginal,
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET_ID,
+            refresh_token: refreshToken,
+            client_id: authConstants.CLIENT_ID,
+            client_secret: authConstants.CLIENT_SECRET,
           }),
           {
             headers: {
@@ -46,36 +39,47 @@ export const useFetch = (url, fetchFunction) => {
             },
           }
         );
-        const accessToken = response.data.access_token;
+
+        const newAccessToken = response.data.access_token;
         const expiresIn = response.data.expires_in;
-        const expirationTime = new Date().getTime() + expiresIn * 1000;
+        const newExpireTime = new Date().getTime() + expiresIn * 1000;
 
-        dispatch(spotifyAuthSlice.actions.setToken(accessToken));
-
-        localStorage.setItem(SPOTIFY_ACCESS_TOKEN, accessToken);
-        localStorage.setItem(SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME, expirationTime);
+        localStorage.setItem(authConstants.ACCESS_TOKEN, newAccessToken);
+        localStorage.setItem(authConstants.TOKEN_EXPIRE_TIME, newExpireTime);
+        dispatch(authSlice.actions.setToken(newAccessToken));
       } catch (error) {
+        console.log("Error is useFetch refresh token");
         setError(error.response.data);
       }
     };
+
     const fetchData = async () => {
       setLoading(true);
       setData(null);
       setError(null);
+
       try {
-        if (isSpotifyTokenExpired()) await refreshSpotifyAccessToken();
+        if (isTokenExpired()) {
+          await refreshTokenFunction();
+        }
+
         const res = await fetchFunction(url);
-        setLoading(false);
+
+        setError(null);
         setData(res);
       } catch (error) {
-        setLoading(false);
+        console.log("Error in useFetch fetchData");
+
         setError(error.response.data);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
 
     return () => abortController.abort();
-  }, [dispatch, fetchFunction, refreshTokenOriginal]);
+  }, [dispatch, fetchFunction, refreshToken]);
+
   return { data, loading, error };
 };

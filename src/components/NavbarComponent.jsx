@@ -1,4 +1,5 @@
 import SpotifyAuth from "./SpotifyAuth";
+import YoutubeAuth from "./YoutubeAuth";
 
 const NavbarComponent = () => {
   return (
@@ -8,9 +9,7 @@ const NavbarComponent = () => {
           <SpotifyAuth />
         </li>
         <li className="nav-item">
-          <a className="btn btn-outline-danger me-3" href="/login/youtube">
-            <i className="bi bi-youtube"></i> Login via YouTube
-          </a>
+          <YoutubeAuth />
         </li>
       </ul>
     </nav>
