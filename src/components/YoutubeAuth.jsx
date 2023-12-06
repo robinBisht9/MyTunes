@@ -17,8 +17,6 @@ const YoutubeAuth = () => {
   const handleLogout = () => {
     dispatch(youtubeAuthSlice.actions.logout());
     localStorage.removeItem(YOUTUBE_ACCESS_TOKEN);
-    localStorage.removeItem(YOUTUBE_REFRESH_TOKEN);
-    localStorage.removeItem(YOUTUBE_ACCESS_TOKEN_EXPIRE_TIME);
   };
   return (
     <div>

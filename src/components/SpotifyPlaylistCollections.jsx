@@ -11,6 +11,7 @@ import {
   SPOTIFY_REFRESH_TOKEN,
 } from "../constants";
 import { spotifyAuthSlice } from "../store/slices";
+import { Puff, ThreeDots } from "react-loader-spinner";
 
 const spotifyAuthConstants = {
   ACCESS_TOKEN: SPOTIFY_ACCESS_TOKEN,
@@ -36,7 +37,18 @@ const SpotifyPlaylistCollections = () => {
       <h6 className="display-6 text-center text-decoration-underline">
         Your Spotify Playlist
       </h6>
-      {loading && !error && <div>Loading</div>}
+      {loading && !error && (
+        <ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#4fa94d"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={true}
+        />
+      )}
       {error && <div>Error Occured</div>}
       {!loading && !error && (
         <div className="d-flex justify-content-around mt-4">

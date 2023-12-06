@@ -1,10 +1,11 @@
-import { useFetch } from "../hooks/useFetch";
-import { fetchDataFromSpotifyApi } from "../utils/fetchSpotifyApi";
+import { Puff, ThreeDots } from "react-loader-spinner";
+import { useFetch } from "../hooks/useFetchYoutube";
+import { fetchDataFromYoutubeApi } from "../utils/fetchYoutubeApi";
 
 const YoutubePlaylistCollections = () => {
   const { data, loading, error } = useFetch(
-    "/me/playlists",
-    fetchDataFromSpotifyApi
+    "/playlists?part=snippet&mine=true",
+    fetchDataFromYoutubeApi
   );
 
   console.log(data);
@@ -12,19 +13,30 @@ const YoutubePlaylistCollections = () => {
   return (
     <div>
       <h6 className="display-6 text-center text-decoration-underline">
-        Your Spotify Playlist
+        Your Youtube Playlist
       </h6>
-      {loading && !error && <div>Loading</div>}
+      {loading && !error && (
+        <ThreeDots
+          height="80"
+          width="80"
+          radius="9"
+          color="#4fa94d"
+          ariaLabel="three-dots-loading"
+          wrapperStyle={{}}
+          wrapperClassName=""
+          visible={true}
+        />
+      )}
       {error && <div>Error Occured</div>}
       {!loading && !error && (
         <div className="d-flex justify-content-around mt-4">
           {data?.items?.map((item) => {
             return (
-              <div className="card" key={item.name} style={{ width: "20rem" }}>
+              <div className="card" key={item.id} style={{ width: "20rem" }}>
                 <div className="card-body">
-                  <h5 className="card-title">{item.name}</h5>
+                  <h5 className="card-title">{item.snippet.title}</h5>
                   <h6 className="card-subtitle mb-2 text-body-secondary">
-                    {item.description}
+                    {item.snippet.description}
                   </h6>
                   <a href="#" className="card-link">
                     Card link

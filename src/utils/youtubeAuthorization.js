@@ -3,7 +3,7 @@ export const CLIENT_ID_YOUTUBE =
 export const CLIENT_SECRET_ID_YOUTUBE = "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";
 
 export const AUTH_URL_YOUTUBE = "https://accounts.google.com/o/oauth2/v2/auth";
-export const REDIRECT_URI_YOUTUBE = "";
+export const REDIRECT_URI_YOUTUBE = "http://localhost:5173/youtubeCallback";
 
 const scopes =
   "https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtubepartner";
@@ -12,4 +12,6 @@ export const youtubeAuthUrl = `${AUTH_URL_YOUTUBE}?
 client_id=${CLIENT_ID_YOUTUBE}&
 redirect_uri=${REDIRECT_URI_YOUTUBE}&
 scope=${encodeURIComponent(scopes)}&
-response_type=code&access_type=offline`;
+response_type=token&
+include_granted_scopes=true&
+state='state_parameter_passthrough_value'`;
