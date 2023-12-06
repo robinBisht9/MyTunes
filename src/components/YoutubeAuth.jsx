@@ -1,11 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { youtubeAuthUrl } from "../utils/youtubeAuthorization";
 
-import {
-  YOUTUBE_ACCESS_TOKEN,
-  YOUTUBE_ACCESS_TOKEN_EXPIRE_TIME,
-  YOUTUBE_REFRESH_TOKEN,
-} from "../constants";
 import { youtubeAuthSlice } from "../store/slices";
 
 const YoutubeAuth = () => {
@@ -16,7 +11,6 @@ const YoutubeAuth = () => {
   const access_token = useSelector((state) => state.youtube.token);
   const handleLogout = () => {
     dispatch(youtubeAuthSlice.actions.logout());
-    localStorage.removeItem(YOUTUBE_ACCESS_TOKEN);
   };
   return (
     <div>

@@ -1,33 +1,14 @@
+import { useSelector } from "react-redux";
 import { useFetch } from "../hooks/useFetch";
-import { fetchDataFromSpotifyApi } from "../utils/fetchSpotifyApi";
-import {
-  AUTH_TOKEN_URL,
-  CLIENT_ID,
-  CLIENT_SECRET_ID,
-} from "../utils/spotifyAuthorization";
-import {
-  SPOTIFY_ACCESS_TOKEN,
-  SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME,
-  SPOTIFY_REFRESH_TOKEN,
-} from "../constants";
-import { spotifyAuthSlice } from "../store/slices";
-import { Puff, ThreeDots } from "react-loader-spinner";
-
-const spotifyAuthConstants = {
-  ACCESS_TOKEN: SPOTIFY_ACCESS_TOKEN,
-  REFRESH_TOKEN: SPOTIFY_REFRESH_TOKEN,
-  TOKEN_EXPIRE_TIME: SPOTIFY_ACCESS_TOKEN_EXPIRE_TIME,
-  CLIENT_ID,
-  CLIENT_SECRET_ID,
-  TOKEN_URL: AUTH_TOKEN_URL,
-};
+import { ThreeDots } from "react-loader-spinner";
+import { BASE_URL_SPOTIFY } from "../baseUrl";
 
 const SpotifyPlaylistCollections = () => {
+  const spotifyToken = useSelector((state) => state.spotify.token);
   const { data, loading, error } = useFetch(
     "/me/playlists",
-    fetchDataFromSpotifyApi,
-    spotifyAuthSlice,
-    spotifyAuthConstants
+    spotifyToken,
+    BASE_URL_SPOTIFY
   );
 
   console.log(data);

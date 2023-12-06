@@ -16,5 +16,5 @@ const scopes = [
 export const spotifyAuthUrl = `${AUTH_URL}?
 client_id=${CLIENT_ID}
 &redirect_uri=${REDIRECT_URI}
-&response_type=code
+&response_type=token
 &scope=${scopes.join("%20")}`;

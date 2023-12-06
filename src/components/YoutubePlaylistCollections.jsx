@@ -1,11 +1,14 @@
-import { Puff, ThreeDots } from "react-loader-spinner";
-import { useFetch } from "../hooks/useFetchYoutube";
-import { fetchDataFromYoutubeApi } from "../utils/fetchYoutubeApi";
+import { ThreeDots } from "react-loader-spinner";
+import { useFetch } from "../hooks/useFetch";
+import { useSelector } from "react-redux";
+import { BASE_URL_YOUTUBE } from "../baseUrl";
 
 const YoutubePlaylistCollections = () => {
+  const youtubeToken = useSelector((state) => state.youtube.token);
   const { data, loading, error } = useFetch(
     "/playlists?part=snippet&mine=true",
-    fetchDataFromYoutubeApi
+    youtubeToken,
+    BASE_URL_YOUTUBE
   );
 
   console.log(data);
