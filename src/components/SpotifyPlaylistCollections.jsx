@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { useFetch } from "../hooks/useFetch";
 import { ThreeDots } from "react-loader-spinner";
 import { BASE_URL_SPOTIFY } from "../baseUrl";
+import { PlaylistCard } from "./Cards/PlaylistCard";
 
 const SpotifyPlaylistCollections = () => {
   const spotifyToken = useSelector((state) => state.spotify.token);
@@ -10,6 +11,10 @@ const SpotifyPlaylistCollections = () => {
     spotifyToken,
     BASE_URL_SPOTIFY
   );
+
+  const handleAddingToYoutube = (id) => {
+    console.log(id);
+  };
 
   console.log(data);
 
@@ -35,20 +40,14 @@ const SpotifyPlaylistCollections = () => {
         <div className="d-flex justify-content-around mt-4">
           {data?.items?.map((item) => {
             return (
-              <div className="card" key={item.name} style={{ width: "20rem" }}>
-                <div className="card-body">
-                  <h5 className="card-title">{item.name}</h5>
-                  <h6 className="card-subtitle mb-2 text-body-secondary">
-                    {item.description}
-                  </h6>
-                  <a href="#" className="card-link">
-                    Card link
-                  </a>
-                  <a href="#" className="card-link">
-                    Another link
-                  </a>
-                </div>
-              </div>
+              <PlaylistCard
+                name={item.name}
+                count={item.tracks.total}
+                addTo="Youtube"
+                handleTransfer={handleAddingToYoutube}
+                image={item.images[0].url}
+                key={item.name}
+              />
             );
           })}
         </div>

@@ -2,11 +2,12 @@ import { ThreeDots } from "react-loader-spinner";
 import { useFetch } from "../hooks/useFetch";
 import { useSelector } from "react-redux";
 import { BASE_URL_YOUTUBE } from "../baseUrl";
+import { PlaylistCard } from "./Cards/PlaylistCard";
 
 const YoutubePlaylistCollections = () => {
   const youtubeToken = useSelector((state) => state.youtube.token);
   const { data, loading, error } = useFetch(
-    "/playlists?part=snippet&mine=true",
+    "/playlists?part=snippet,contentDetails&mine=true",
     youtubeToken,
     BASE_URL_YOUTUBE
   );
@@ -35,20 +36,12 @@ const YoutubePlaylistCollections = () => {
         <div className="d-flex justify-content-around mt-4">
           {data?.items?.map((item) => {
             return (
-              <div className="card" key={item.id} style={{ width: "20rem" }}>
-                <div className="card-body">
-                  <h5 className="card-title">{item.snippet.title}</h5>
-                  <h6 className="card-subtitle mb-2 text-body-secondary">
-                    {item.snippet.description}
-                  </h6>
-                  <a href="#" className="card-link">
-                    Card link
-                  </a>
-                  <a href="#" className="card-link">
-                    Another link
-                  </a>
-                </div>
-              </div>
+              <PlaylistCard
+                key={item.id}
+                name={item.snippet.title}
+                count={item.contentDetails.itemCount}
+                image={item.snippet.thumbnails.maxres.url}
+              />
             );
           })}
         </div>
