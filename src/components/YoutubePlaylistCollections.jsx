@@ -13,6 +13,9 @@ const YoutubePlaylistCollections = () => {
   );
 
   console.log(data);
+  const handleAddingToSpotify = (id) => {
+    console.log(id);
+  };
 
   return (
     <div>
@@ -40,7 +43,10 @@ const YoutubePlaylistCollections = () => {
                 key={item.id}
                 name={item.snippet.title}
                 count={item.contentDetails.itemCount}
-                image={item.snippet.thumbnails.maxres.url}
+                image={item.snippet.thumbnails?.default?.url}
+                addTo="Spotify"
+                handleTransfer={handleAddingToSpotify}
+                id={item.id}
               />
             );
           })}

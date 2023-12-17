@@ -1,5 +1,12 @@
 import "./style.css";
-export const PlaylistCard = ({ name, count, addTo, image, handleTransfer }) => {
+export const PlaylistCard = ({
+  name,
+  count,
+  addTo,
+  image,
+  handleTransfer,
+  id,
+}) => {
   return (
     <div className="card_item">
       <div className="card_inner">
@@ -11,7 +18,9 @@ export const PlaylistCard = ({ name, count, addTo, image, handleTransfer }) => {
             {count}
           </div>
         </div>
-        <button className="addTo">Add To {addTo}</button>
+        <button className="addTo" onClick={() => handleTransfer(id)}>
+          Add To {addTo}
+        </button>
       </div>
     </div>
   );

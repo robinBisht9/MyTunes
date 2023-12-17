@@ -11,7 +11,7 @@ export const useFetch = (url, accessToken, baseUrl) => {
     const headers = {
       Authorization: "Bearer " + accessToken,
     };
-    const fetchDataFromYoutubeApi = async () => {
+    const fetchDataFromApi = async () => {
       try {
         const { data } = await axios.get(baseUrl + url, {
           headers: headers,
@@ -24,7 +24,7 @@ export const useFetch = (url, accessToken, baseUrl) => {
         setLoading(false);
       }
     };
-    fetchDataFromYoutubeApi();
+    fetchDataFromApi();
     return () => abortController.abort();
   }, [url, accessToken, baseUrl]);
 

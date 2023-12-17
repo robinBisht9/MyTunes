@@ -3,9 +3,11 @@ import { useFetch } from "../hooks/useFetch";
 import { ThreeDots } from "react-loader-spinner";
 import { BASE_URL_SPOTIFY } from "../baseUrl";
 import { PlaylistCard } from "./Cards/PlaylistCard";
+import { useNavigate } from "react-router-dom";
 
 const SpotifyPlaylistCollections = () => {
   const spotifyToken = useSelector((state) => state.spotify.token);
+  const navigate = useNavigate();
   const { data, loading, error } = useFetch(
     "/me/playlists",
     spotifyToken,
@@ -13,7 +15,7 @@ const SpotifyPlaylistCollections = () => {
   );
 
   const handleAddingToYoutube = (id) => {
-    console.log(id);
+    navigate(`/add-to-youtube/${id}`);
   };
 
   console.log(data);
@@ -46,6 +48,7 @@ const SpotifyPlaylistCollections = () => {
                 addTo="Youtube"
                 handleTransfer={handleAddingToYoutube}
                 image={item.images[0].url}
+                id={item.id}
                 key={item.name}
               />
             );
