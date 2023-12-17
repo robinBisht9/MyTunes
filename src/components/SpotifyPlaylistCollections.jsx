@@ -25,37 +25,43 @@ const SpotifyPlaylistCollections = () => {
       <h6 className="display-6 text-center text-decoration-underline">
         Your Spotify Playlist
       </h6>
-      {loading && !error && (
-        <ThreeDots
-          height="80"
-          width="80"
-          radius="9"
-          color="#4fa94d"
-          ariaLabel="three-dots-loading"
-          wrapperStyle={{}}
-          wrapperClassName=""
-          visible={true}
-        />
-      )}
-      {error && <div>Error Occured</div>}
-      {!loading && !error && (
-        <div className="d-flex justify-content-around mt-4">
-          {data?.items?.map((item) => {
-            return (
-              <PlaylistCard
-                name={item.name}
-                count={item.tracks.total}
-                addTo="Youtube"
-                handleTransfer={handleAddingToYoutube}
-                image={item.images[0].url}
-                id={item.id}
-                key={item.name}
-              />
-            );
-          })}
-        </div>
-      )}
 
+      {loading ? (
+        <div className="d-flex mt-4 justify-content-center">
+          <ThreeDots
+            height="80"
+            width="80"
+            radius="9"
+            color="#4fa94d"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        </div>
+      ) : (
+        <>
+          {error.error ? (
+            <div>Error Occured</div>
+          ) : (
+            <div className="d-flex justify-content-around mt-4">
+              {data?.items?.map((item) => {
+                return (
+                  <PlaylistCard
+                    name={item.name}
+                    count={item.tracks.total}
+                    addTo="Youtube"
+                    handleTransfer={handleAddingToYoutube}
+                    image={item.images[0].url}
+                    id={item.id}
+                    key={item.name}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </>
+      )}
       <div className="mt-3 border-bottom"></div>
     </div>
   );

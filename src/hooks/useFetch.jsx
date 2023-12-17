@@ -3,8 +3,8 @@ import axios from "axios";
 
 export const useFetch = (url, accessToken, baseUrl) => {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(null);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState({ error: false, data: null });
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -18,8 +18,8 @@ export const useFetch = (url, accessToken, baseUrl) => {
         });
 
         setData(data);
-      } catch (error) {
-        setError(error);
+      } catch (err) {
+        setError({ error: true, data: err });
       } finally {
         setLoading(false);
       }
