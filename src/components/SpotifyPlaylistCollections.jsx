@@ -52,7 +52,7 @@ const SpotifyPlaylistCollections = () => {
                     count={item.tracks.total}
                     addTo="Youtube"
                     handleTransfer={handleAddingToYoutube}
-                    image={item.images[0].url}
+                    image={item.images[0]?.url}
                     id={item.id}
                     key={item.name}
                   />

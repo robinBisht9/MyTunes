@@ -10,7 +10,7 @@ export const PlaylistCard = ({
   return (
     <div className="card_item">
       <div className="card_inner">
-        <img src={image} alt="Song image" />
+        {image && <img src={image} alt="Song image" />}
         <div className="userName">{name}</div>
         <div className="detail-box">
           <div className="gitDetail">

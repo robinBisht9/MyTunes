@@ -3,18 +3,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { BASE_URL_SPOTIFY, BASE_URL_YOUTUBE } from "../baseUrl";
 import { useSelector } from "react-redux";
-import { CirclesWithBar } from "react-loader-spinner";
 import axios from "axios";
-
-const getTimeInMinutesAndSeconds = (duration) => {
-  const seconds = Math.floor((duration / 1000) % 60);
-  const minutes = Math.floor((duration / 1000 / 60) % 60);
-
-  return [
-    minutes.toString().padStart(2, "0"),
-    seconds.toString().padStart(2, "0"),
-  ].join(":");
-};
+import { getTimeInMinutesAndSeconds, normalizeString } from "../utils/helper";
+import SongsTable from "../components/SongsTable";
 
 const TransferPlaylistToYoutube = () => {
   const { playlistId } = useParams();
@@ -48,14 +39,20 @@ const TransferPlaylistToYoutube = () => {
       const createdPlaylistId = createPlaylistResponse.data.id;
 
       for (let item of data.tracks.items) {
+        const encodedComp = encodeURIComponent(
+          `${item.track.name} ${item.track.artists.reduce(
+            (acc, val) => acc + val.name + " ",
+            ""
+          )}`
+        );
+        console.log("Encoded ", encodedComp);
         const searchResponse = await axios.get(
-          `${BASE_URL_YOUTUBE}/search?part=snippet&q=${encodeURIComponent(
-            `${item.track.name} ${item.track.artists[0].name}`
-          )}&type=video`,
+          `${BASE_URL_YOUTUBE}/search?part=snippet&q=${encodedComp}&type=video&videoCategoryId=10&videoCategoryId=24`,
           {
             headers: youtubePlaylistNameHeader,
           }
         );
+        console.log(searchResponse);
         const responseVideoId = searchResponse.data.items[0]?.id.videoId;
         if (!responseVideoId) {
           continue;
@@ -77,11 +74,8 @@ const TransferPlaylistToYoutube = () => {
           }
         );
       }
-
-      console.log("Playlist Created Successfully");
     } catch (error) {
       console.log(error);
-      console.log("Error Creating Playlist");
     } finally {
       navigate("/");
     }
@@ -93,84 +87,25 @@ const TransferPlaylistToYoutube = () => {
     BASE_URL_SPOTIFY
   );
 
+  const tracks = data?.tracks?.items?.map((item) => ({
+    id: item?.track?.id,
+    title: item?.track?.name,
+    artist: item?.track?.artists[0]?.name,
+    duration: getTimeInMinutesAndSeconds(item.track.duration_ms),
+  }));
+
   return (
-    <div className="container">
-      {transfering || loading ? (
-        <div className="d-flex justify-content-center mt-4">
-          <CirclesWithBar
-            height="100"
-            width="100"
-            color="#4fa94d"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            outerCircleColor=""
-            innerCircleColor=""
-            barColor=""
-            ariaLabel="circles-with-bar-loading"
-          />
-        </div>
-      ) : (
-        <>
-          <div>
-            <div className="d-flex mb-3 mt-4 justify-content-start">
-              <img
-                src={data?.images[0]?.url}
-                className="playlist-image"
-                alt="Playlist cover"
-              />
-              <h5 className="display-6 ms-5">
-                <em>Playlist Name</em> : {data?.name}
-              </h5>
-            </div>
-            <div className="card mb-4">
-              <div className="card-body">
-                <table className="table table-striped table-hover">
-                  <thead className="table-dark darken-3">
-                    <tr className="text-white">
-                      <th>#</th>
-                      <th>Title</th>
-                      <th>Artist</th>
-                      <th>Duration</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data?.tracks?.items?.map((item, index) => {
-                      return (
-                        <tr key={item.track.id}>
-                          <th>{index + 1}</th>
-                          <td>{item.track.name}</td>
-                          <td>{item.track.artists[0].name}</td>
-                          <td>
-                            {getTimeInMinutesAndSeconds(item.track.duration_ms)}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div>
-            <label>
-              Enter Playlist Name :
-              <input
-                type="text"
-                value={playlistName}
-                onChange={(e) => handlePlaylistNameChange(e)}
-              />
-              <button
-                className="btn btn-danger"
-                onClick={handleTransferToYoutube}
-              >
-                Create Playlist
-              </button>
-            </label>
-          </div>
-        </>
-      )}
-    </div>
+    <SongsTable
+      transfering={transfering}
+      playlistLoading={loading}
+      imageUrl={data?.images[0]?.url}
+      playlistTitle={data?.name}
+      tracks={tracks}
+      duration={true}
+      playlistName={playlistName}
+      handlePlaylistNameChange={handlePlaylistNameChange}
+      handleTransfer={handleTransferToYoutube}
+    />
   );
 };
 

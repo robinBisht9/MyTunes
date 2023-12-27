@@ -7,6 +7,7 @@ import SpotifyAuthCallBack from "./page/SpotifyAuthCallBack";
 import YoutubeAuthCallBack from "./page/YoutubeAuthCallBack";
 import TransferPlaylistToYoutube from "./page/TransferPlaylistToYoutube";
 import Header from "./components/Header";
+import TransferPlaylistToSpotify from "./page/TransferPlaylistToSpotify";
 function App() {
   return (
     <>
@@ -19,6 +20,10 @@ function App() {
           <Route
             path="/add-to-youtube/:playlistId"
             element={<TransferPlaylistToYoutube />}
+          />
+          <Route
+            path="/add-to-spotify/:playlistId"
+            element={<TransferPlaylistToSpotify />}
           />
         </Routes>
       </BrowserRouter>

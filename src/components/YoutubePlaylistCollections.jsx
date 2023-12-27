@@ -3,9 +3,11 @@ import { useFetch } from "../hooks/useFetch";
 import { useSelector } from "react-redux";
 import { BASE_URL_YOUTUBE } from "../baseUrl";
 import { PlaylistCard } from "./Cards/PlaylistCard";
+import { useNavigate } from "react-router-dom";
 
 const YoutubePlaylistCollections = () => {
   const youtubeToken = useSelector((state) => state.youtube.token);
+  const navigate = useNavigate();
   const { data, loading, error } = useFetch(
     "/playlists?part=snippet,contentDetails&mine=true",
     youtubeToken,
@@ -14,7 +16,7 @@ const YoutubePlaylistCollections = () => {
 
   console.log(data);
   const handleAddingToSpotify = (id) => {
-    console.log(id);
+    navigate(`/add-to-spotify/${id}`);
   };
 
   return (
