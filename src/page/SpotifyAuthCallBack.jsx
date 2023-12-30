@@ -12,11 +12,14 @@ const SpotifyAuthCallBack = () => {
     const getTokenFromUrl = () => {
       const locationHash = window.location.hash;
       const params = new URLSearchParams(locationHash.substring(1));
-      console.log(locationHash);
-      return params.get("access_token");
+      return [params.get("access_token"), params.get("expires_in")];
     };
     const spotifyAccessToken = getTokenFromUrl();
-    dispatch(spotifyAuthSlice.actions.setToken(spotifyAccessToken));
+    const tokenValue = {
+      token: spotifyAccessToken[0],
+      expiry: new Date().getTime() + spotifyAccessToken[1] * 1000,
+    };
+    dispatch(spotifyAuthSlice.actions.setToken(tokenValue));
 
     navigate("/");
   }, [dispatch, navigate]);

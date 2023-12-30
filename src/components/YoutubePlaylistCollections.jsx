@@ -4,6 +4,9 @@ import { useSelector } from "react-redux";
 import { BASE_URL_YOUTUBE } from "../baseUrl";
 import { PlaylistCard } from "./Cards/PlaylistCard";
 import { useNavigate } from "react-router-dom";
+import Carousel from "react-multi-carousel";
+import { responsive } from "../utils/helper";
+import ErrorPage from "../page/ErrorPage";
 
 const YoutubePlaylistCollections = () => {
   const youtubeToken = useSelector((state) => state.youtube.token);
@@ -20,10 +23,10 @@ const YoutubePlaylistCollections = () => {
   };
 
   return (
-    <div>
-      <h6 className="display-6 text-center text-decoration-underline">
+    <div className="mt-4 border-bottom-playlist ">
+      <h3 className=" text-center bg-body-tertiary py-3">
         Your Youtube Playlist
-      </h6>
+      </h3>
       {loading ? (
         <div className="d-flex mt-4 justify-content-center">
           <ThreeDots
@@ -40,25 +43,26 @@ const YoutubePlaylistCollections = () => {
       ) : (
         <>
           {error.error ? (
-            <div>Error Occured</div>
+            <ErrorPage errorMessage={error.data} />
           ) : (
-            <>
-              <div className="d-flex justify-content-around mt-4">
-                {data?.items?.map((item) => {
-                  return (
-                    <PlaylistCard
-                      key={item.id}
-                      name={item.snippet.title}
-                      count={item.contentDetails.itemCount}
-                      image={item.snippet.thumbnails?.default?.url}
-                      addTo="Spotify"
-                      handleTransfer={handleAddingToSpotify}
-                      id={item.id}
-                    />
-                  );
-                })}
-              </div>
-            </>
+            <Carousel
+              responsive={responsive}
+              containerClass="carousel-container"
+            >
+              {data?.items?.map((item) => {
+                return (
+                  <PlaylistCard
+                    key={item.id}
+                    name={item.snippet.title}
+                    count={item.contentDetails.itemCount}
+                    image={item.snippet.thumbnails?.default?.url}
+                    addTo="Spotify"
+                    handleTransfer={handleAddingToSpotify}
+                    id={item.id}
+                  />
+                );
+              })}
+            </Carousel>
           )}
         </>
       )}

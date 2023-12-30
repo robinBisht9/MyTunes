@@ -12,7 +12,7 @@ const SpotifyAuth = () => {
     dispatch(spotifySlice.actions.logout());
   };
   return (
-    <div>
+    <div className="mx-2">
       {access_token ? (
         <button onClick={handleLogout} className="btn btn-outline-success">
           <i className="bi bi-spotify"></i> Spotify Logout

@@ -11,15 +11,14 @@ export const PlaylistCard = ({
     <div className="card_item">
       <div className="card_inner">
         {image && <img src={image} alt="Song image" />}
-        <div className="userName">{name}</div>
+        <div className="songName">{name}</div>
         <div className="detail-box">
-          <div className="gitDetail">
-            <span>Song Count</span>
-            {count}
+          <div className="songCount">
+            <span>Song Count : {count}</span>
           </div>
         </div>
         <button className="addTo" onClick={() => handleTransfer(id)}>
-          Add To {addTo}
+          Transfer To {addTo}
         </button>
       </div>
     </div>

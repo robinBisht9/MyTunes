@@ -4,8 +4,9 @@ import { useFetch } from "../hooks/useFetch";
 import { BASE_URL_SPOTIFY, BASE_URL_YOUTUBE } from "../baseUrl";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { getTimeInMinutesAndSeconds, normalizeString } from "../utils/helper";
+import { getTimeInMinutesAndSeconds } from "../utils/helper";
 import SongsTable from "../components/SongsTable";
+import ErrorPage from "./ErrorPage";
 
 const TransferPlaylistToYoutube = () => {
   const { playlistId } = useParams();
@@ -45,14 +46,12 @@ const TransferPlaylistToYoutube = () => {
             ""
           )}`
         );
-        console.log("Encoded ", encodedComp);
         const searchResponse = await axios.get(
-          `${BASE_URL_YOUTUBE}/search?part=snippet&q=${encodedComp}&type=video&videoCategoryId=10&videoCategoryId=24`,
+          `${BASE_URL_YOUTUBE}/search?part=snippet&q=${encodedComp}&type=video`,
           {
             headers: youtubePlaylistNameHeader,
           }
         );
-        console.log(searchResponse);
         const responseVideoId = searchResponse.data.items[0]?.id.videoId;
         if (!responseVideoId) {
           continue;
@@ -75,14 +74,13 @@ const TransferPlaylistToYoutube = () => {
         );
       }
     } catch (error) {
-      console.log(error);
-    } finally {
-      navigate("/");
+      navigate("/error");
     }
+    navigate("/");
   };
 
   const { data, loading, error } = useFetch(
-    `/playlists/${playlistId}`,
+    `/playlis/${playlistId}`,
     spotifyToken,
     BASE_URL_SPOTIFY
   );
@@ -95,17 +93,23 @@ const TransferPlaylistToYoutube = () => {
   }));
 
   return (
-    <SongsTable
-      transfering={transfering}
-      playlistLoading={loading}
-      imageUrl={data?.images[0]?.url}
-      playlistTitle={data?.name}
-      tracks={tracks}
-      duration={true}
-      playlistName={playlistName}
-      handlePlaylistNameChange={handlePlaylistNameChange}
-      handleTransfer={handleTransferToYoutube}
-    />
+    <>
+      {error.error ? (
+        <ErrorPage errorMessage={error.data} />
+      ) : (
+        <SongsTable
+          transfering={transfering}
+          playlistLoading={loading}
+          imageUrl={data?.images[0]?.url}
+          playlistTitle={data?.name}
+          tracks={tracks}
+          duration={true}
+          playlistName={playlistName}
+          handlePlaylistNameChange={handlePlaylistNameChange}
+          handleTransfer={handleTransferToYoutube}
+        />
+      )}
+    </>
   );
 };
 

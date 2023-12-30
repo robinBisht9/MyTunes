@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import "react-multi-carousel/lib/styles.css";
 import "./index.css";
 import { store, persistor } from "./store/store";
 import { Provider } from "react-redux";

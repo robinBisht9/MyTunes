@@ -13,7 +13,7 @@ const YoutubeAuth = () => {
     dispatch(youtubeAuthSlice.actions.logout());
   };
   return (
-    <div>
+    <div className="mx-2">
       {access_token ? (
         <button onClick={handleLogout} className="btn btn-outline-danger">
           <i className="bi bi-youtube"></i> Youtube Logout

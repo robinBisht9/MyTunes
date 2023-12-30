@@ -4,6 +4,9 @@ import { ThreeDots } from "react-loader-spinner";
 import { BASE_URL_SPOTIFY } from "../baseUrl";
 import { PlaylistCard } from "./Cards/PlaylistCard";
 import { useNavigate } from "react-router-dom";
+import Carousel from "react-multi-carousel";
+import { responsive } from "../utils/helper";
+import ErrorPage from "../page/ErrorPage";
 
 const SpotifyPlaylistCollections = () => {
   const spotifyToken = useSelector((state) => state.spotify.token);
@@ -21,10 +24,10 @@ const SpotifyPlaylistCollections = () => {
   console.log(data);
 
   return (
-    <div>
-      <h6 className="display-6 text-center text-decoration-underline">
+    <div className="mt-4 border-bottom-playlist">
+      <h3 className=" text-center bg-body-tertiary py-3">
         Your Spotify Playlist
-      </h6>
+      </h3>
 
       {loading ? (
         <div className="d-flex mt-4 justify-content-center">
@@ -42,9 +45,12 @@ const SpotifyPlaylistCollections = () => {
       ) : (
         <>
           {error.error ? (
-            <div>Error Occured</div>
+            <ErrorPage errorMessage={error.data} />
           ) : (
-            <div className="d-flex justify-content-around mt-4">
+            <Carousel
+              responsive={responsive}
+              containerClass="carousel-container"
+            >
               {data?.items?.map((item) => {
                 return (
                   <PlaylistCard
@@ -58,7 +64,7 @@ const SpotifyPlaylistCollections = () => {
                   />
                 );
               })}
-            </div>
+            </Carousel>
           )}
         </>
       )}

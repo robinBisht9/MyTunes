@@ -38,7 +38,7 @@ const SongsTable = ({
                 alt="Playlist cover"
               />
               <h5 className="display-6 ms-5">
-                <em>Playlist Name</em> : {playlistTitle}
+                <strong>Playlist Name</strong> : {playlistTitle}
               </h5>
             </div>
             <div className="card mb-4">

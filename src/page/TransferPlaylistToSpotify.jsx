@@ -3,9 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFetch } from "../hooks/useFetch";
 import { BASE_URL_SPOTIFY, BASE_URL_YOUTUBE } from "../baseUrl";
 import { useSelector } from "react-redux";
-import { extractArtistName, normalizeString } from "../utils/helper";
+import { normalizeString } from "../utils/helper";
 import axios from "axios";
 import SongsTable from "../components/SongsTable";
+import ErrorPage from "./ErrorPage";
 
 const TransferPlaylistToSpotify = () => {
   const { playlistId } = useParams();
@@ -91,24 +92,29 @@ const TransferPlaylistToSpotify = () => {
         );
       }
     } catch (error) {
-      console.log(error);
-    } finally {
-      navigate("/");
+      navigate("/error");
     }
+    navigate("/");
   };
 
   return (
-    <SongsTable
-      transfering={transfering}
-      playlistLoading={playlistLoading}
-      imageUrl={playlistData?.items[0]?.snippet?.thumbnails?.default?.url}
-      playlistTitle={playlistData?.items[0]?.snippet?.title}
-      tracks={tracks}
-      duration={false}
-      playlistName={playlistName}
-      handlePlaylistNameChange={handlePlaylistNameChange}
-      handleTransfer={handleTransferToSpotify}
-    />
+    <>
+      {playlistError.error ? (
+        <ErrorPage errorMessage={playlistError.data} />
+      ) : (
+        <SongsTable
+          transfering={transfering}
+          playlistLoading={playlistLoading}
+          imageUrl={playlistData?.items[0]?.snippet?.thumbnails?.default?.url}
+          playlistTitle={playlistData?.items[0]?.snippet?.title}
+          tracks={tracks}
+          duration={false}
+          playlistName={playlistName}
+          handlePlaylistNameChange={handlePlaylistNameChange}
+          handleTransfer={handleTransferToSpotify}
+        />
+      )}
+    </>
   );
 };
 

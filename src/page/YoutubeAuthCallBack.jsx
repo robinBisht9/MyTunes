@@ -11,10 +11,15 @@ const YoutubeAuthCallBack = () => {
     const getTokenFromUrl = () => {
       const locationHash = window.location.hash;
       const params = new URLSearchParams(locationHash.substring(1));
-      return params.get("access_token");
+      return [params.get("access_token"), params.get("expires_in")];
     };
+
     const youtubeAccessToken = getTokenFromUrl();
-    dispatch(youtubeAuthSlice.actions.setToken(youtubeAccessToken));
+    const tokenValue = {
+      token: youtubeAccessToken[0],
+      expiry: new Date().getTime() + youtubeAccessToken[1] * 1000,
+    };
+    dispatch(youtubeAuthSlice.actions.setToken(tokenValue));
 
     navigate("/");
   }, [dispatch, navigate]);
