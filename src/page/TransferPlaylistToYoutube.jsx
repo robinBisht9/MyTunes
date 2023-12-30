@@ -80,7 +80,7 @@ const TransferPlaylistToYoutube = () => {
   };
 
   const { data, loading, error } = useFetch(
-    `/playlis/${playlistId}`,
+    `/playlists/${playlistId}`,
     spotifyToken,
     BASE_URL_SPOTIFY
   );
