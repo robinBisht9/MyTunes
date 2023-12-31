@@ -9,6 +9,6 @@ export default defineConfig({
   plugins: [react()],
   build: {
     // Set this to false for production to use runtime env variables
-    inlineDynamicImports: false,
+    inlineDynamicImports: true,
   },
 });
